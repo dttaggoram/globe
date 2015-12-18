@@ -1,0 +1,1 @@
+A demonstration of D3 3.3’s new [zoom transitions](/mbostock/6238040). For best viewing experience, please play “Doin’ It Right (feat. Panda Bear)” off the latest Daft Punk album while watching this animation.
