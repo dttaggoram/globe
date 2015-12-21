@@ -11,6 +11,35 @@
 </head>
 <style type="text/css">
 
+button {
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: large;
+    padding: 10px 15px;
+    background: #000;
+    color: #FFF;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: solid 1px #20538D;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    -webkit-transition-duration: 0.2s;
+    -moz-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+button:hover {
+    background: #999;
+    border: solid 1px #2A4E77;
+    text-decoration: none;
+}
+
+
 #banner {
 	padding: 20px;
     border: 2px solid;
@@ -87,8 +116,8 @@ function getLongLats(){
     	dataType: 'json',
     	success: function(json) {
     		$.ajax({
-    			//url:"http://ip-api.com/json/" + json.ip,
-    			url:"http://ip-api.com/json/84.92.42.13",
+    			url:"http://ip-api.com/json/" + json.ip,
+    			//url:"http://ip-api.com/json/84.92.42.13",
     			async: false,
     			dataType: 'json',
     			success: function(data) {
@@ -242,6 +271,8 @@ var width = window.innerWidth-20,
 
 
 $(document).ready(function(){
+
+
 	//prepare rotating cities
 	var cities = ["Aberdeen","Armagh","Bangor","Bath","Belfast","Birmingham","Bradford","Brighton and Hove","Bristol","Cambridge","Canterbury","Cardiff","Carlisle","Chester","Chichester","City of London","Coventry","Derby","Dundee","Durham","Edinburgh","Ely","Exeter","Glasgow","Gloucester","Hereford","Inverness","Kingston upon Hull","Lancaster","Leeds","Leicester","Lichfield","Lincoln","Liverpool","Londonderry","Manchester","Newcastle upon Tyne","Newport","Newry","Norwich","Nottingham","Oxford","Peterborough","Plymouth","Portsmouth","Preston","Ripon","Salford","Salisbury","Sheffield","Southampton","St Albans","St Davids","Stirling","Stoke-on-Trent","Sunderland","Swansea","Truro","Wakefield","Wells","Westminster","Winchester","Wolverhampton","Worcester","York"];
 
@@ -328,9 +359,29 @@ $(document).ready(function(){
     },
     15000);
 
+  //xmaslocations
+
+  xmaslocations = [
+  {"name":"Naomi",
+  "wlong":51.8,
+  "elong":52.2,
+  "nlat":0.4,
+  "slat":-0.4}
+  ]
+
 	//Finally redraw map and point?
 	var mappoint = setTimeout(function() {
 		p = [longlat[1],longlat[0]];
+    xmasname = "test";
+
+    for (j=0;j<xmaslocations.length;j++) {
+      if(longlat[0] > xmaslocations[j].wlong && longlat[0] < xmaslocations[j].elong && longlat[1] > xmaslocations[j].slat && longlat[1] < xmaslocations[j].nlat) { xmasname = xmaslocations[j].name}
+    }
+
+
+    input = "<center><br /><button id='yes' value='yes'>YES</button> <button id='no' value='no'>NO</button></center>";
+
+
 		svg
 		.append("circle")
 		.attr("cx", function(t) { return projection([p[0], p[1]])[0]; })
@@ -349,6 +400,8 @@ $(document).ready(function(){
 	        .style("opacity", 1)
 	        .each("end", repeat)
     	});
+  $("#name").html("<strong>" + xmasname + "</strong> are you coming to Wales?" + input);
+
 	},17500);
 
 
@@ -360,12 +413,22 @@ $(document).ready(function(){
     },8000);*/
 });
 
+
+
+  //$("button").click(function(){ $("#name").html("Excellent"); });
+  //$("#no").click(function(){ $("#name").html("Oh dear"); });
+
 };
+
+$( "button" ).click(function() {
+  alert( "Handler for .click() called." );
+});
 
 </script>
 <div id="banner">
 	<h1 id="found">Searching for your location...</h1>
 	<p id="searching"></p>
+  <h2 id="name"></h2>
 </div>
 </body>
 </html>
