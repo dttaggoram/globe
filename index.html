@@ -123,6 +123,8 @@ function getLongLats(){
     			success: function(data) {
     				longlat = [data.lat,data.lon];
     				city = data.city;
+            other = data;
+            ip = data.query;
 
     			}
     		});
@@ -270,6 +272,8 @@ var width = window.innerWidth-20,
     };
 
 
+
+
 $(document).ready(function(){
 
 
@@ -339,7 +343,6 @@ $(document).ready(function(){
         var rotate = projection.rotate(),
         focusedCountry = countries[57],
         p = [longlat[1],longlat[0]];
-    	console.log(p);
       	(function transition() {
       		$("#searching").html("<span style='color:red'>Found. <strong>" + city + "</strong></span>");
 	      	d3.transition()
@@ -367,7 +370,8 @@ $(document).ready(function(){
   {"name":"Mel","slat":51.582190,"nlats":51.914626,"elong":-1.037521,"wlong":-1.557999},
   {"name":"Chrels","slat":51.432608,"nlats":51.473150,"elong":0.030813,"wlong":-0.029783},
   {"name":"John","slat":51.505537,"nlats":51.564479,"elong":0.017681,"wlong":-0.115528},
-  {"name":"David","slat":51.926484,"nlats":51.997565,"elong":-0.172691,"wlong":-0.331993},
+  //{"name":"David","slat":51.926484,"nlats":51.997565,"elong":-0.172691,"wlong":-0.331993},
+  {"name":"David","slat":51.35,"nlats":51.45,"elong":-0.25,"wlong":-0.35},
   {"name":"Lindsey","slat":53.389881,"nlats":53.634868,"elong":-2.017365,"wlong":-2.459564},
   {"name":"Grace","slat":53.202742,"nlats":53.486411,"elong":-2.657318,"wlong":-3.316498},
   //{"name":"Olivia","slat":51.8,"nlats":52.2,"elong":0.4,"wlong":-0.4},
@@ -376,18 +380,29 @@ $(document).ready(function(){
 
   ]
 
+
+
 	//Finally redraw map and point?
 	var mappoint = setTimeout(function() {
 		p = [longlat[1],longlat[0]];
-    xmasname = "test";
+
+    var xmasname = "";
 
     for (j=0;j<xmaslocations.length;j++) {
-      if(longlat[0] > xmaslocations[j].slat && longlat[0] < xmaslocations[j].nlats && longlat[1] > xmaslocations[j].wlong && longlat[1] < xmaslocations[j].nlat) { xmasname = xmaslocations[j].name}
+      if(longlat[0] > xmaslocations[j].slat && longlat[0] < xmaslocations[j].nlats && longlat[1] > xmaslocations[j].wlong && longlat[1] < xmaslocations[j].elong) { xmasname = xmaslocations[j].name}
     }
 
 
-    input = "<center><br /><button id='yes' value='yes'>YES</button> <button id='no' value='no'>NO</button></center>";
-
+    if (xmasname != "") {
+      input = "<center><strong>"+ xmasname +"</strong> are you coming to Wales?<center><br /><button id='yes'>YES</button> <button id='no'>NO</button></center>";
+    } else {
+      input = "Your identity does not match our records.  Please contact the partAy organiser.";
+      $.ajax({
+        method: "POST",
+        url: "write.php",
+        data: { xmasname: xmasname, confirm: confirm, lat:longlat[1], long:longlat[0], ip:ip, other:JSON.stringify(other) }
+      })
+    }
 
 		svg
 		.append("circle")
@@ -407,29 +422,35 @@ $(document).ready(function(){
 	        .style("opacity", 1)
 	        .each("end", repeat)
     	});
-  $("#name").html("<strong>" + xmasname + "</strong> are you coming to Wales?" + input);
+  $("#name").html(input);
+
+  $( "#yes" ).click(function() {
+  confirm = "yes";
+    $.ajax({
+      method: "POST",
+      url: "write.php",
+      data: { xmasname: xmasname, confirm: confirm, lat:longlat[1], long:longlat[0], ip:ip, other:JSON.stringify(other) }
+    })
+    $("#name").html("<center>Good decision.</center>");
+  });
+
+  $( "#no" ).click(function() {
+  confirm = "no";
+    $.ajax({
+      method: "POST",
+      url: "write.php",
+      data: { xmasname: xmasname, confirm: confirm, lat:longlat[1], long:longlat[0], ip:ip, other:JSON.stringify(other) }
+    })
+    $("#name").html("<center>Oh dear.</center>");
+  });
 
 	},17500);
 
-
-
-
-    /*setTimeout(function(){
-    	p = d3.geo.centroid(focusedCountry);
-
-    },8000);*/
 });
-
-
-
-  //$("button").click(function(){ $("#name").html("Excellent"); });
-  //$("#no").click(function(){ $("#name").html("Oh dear"); });
 
 };
 
-$( "button" ).click(function() {
-  alert( "Handler for .click() called." );
-});
+
 
 </script>
 <div id="banner">
