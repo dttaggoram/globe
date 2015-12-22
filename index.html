@@ -362,11 +362,18 @@ $(document).ready(function(){
   //xmaslocations
 
   xmaslocations = [
-  {"name":"Naomi",
-  "wlong":51.8,
-  "elong":52.2,
-  "nlat":0.4,
-  "slat":-0.4}
+  {"name":"Naomi","slat":52.055868,"nlats":52.275720,"elong":0.261612,"wlong":-0.153122},
+  {"name":"Gareth","slat":51.675962,"nlats":51.930718,"elong":-0.639267,"wlong":-0.994949},
+  {"name":"Mel","slat":51.582190,"nlats":51.914626,"elong":-1.037521,"wlong":-1.557999},
+  {"name":"Chrels","slat":51.432608,"nlats":51.473150,"elong":0.030813,"wlong":-0.029783},
+  {"name":"John","slat":51.505537,"nlats":51.564479,"elong":0.017681,"wlong":-0.115528},
+  {"name":"David","slat":51.926484,"nlats":51.997565,"elong":-0.172691,"wlong":-0.331993},
+  {"name":"Lindsey","slat":53.389881,"nlats":53.634868,"elong":-2.017365,"wlong":-2.459564},
+  {"name":"Grace","slat":53.202742,"nlats":53.486411,"elong":-2.657318,"wlong":-3.316498},
+  //{"name":"Olivia","slat":51.8,"nlats":52.2,"elong":0.4,"wlong":-0.4},
+  {"name":"Fiona","slat":51.465986,"nlats":51.749139,"elong":-3.687973,"wlong":-4.414444},
+  {"name":"Laura","slat":55.229023,"nlats":56.722594,"elong":-1.774292,"wlong":-5.169067}
+
   ]
 
 	//Finally redraw map and point?
@@ -375,7 +382,7 @@ $(document).ready(function(){
     xmasname = "test";
 
     for (j=0;j<xmaslocations.length;j++) {
-      if(longlat[0] > xmaslocations[j].wlong && longlat[0] < xmaslocations[j].elong && longlat[1] > xmaslocations[j].slat && longlat[1] < xmaslocations[j].nlat) { xmasname = xmaslocations[j].name}
+      if(longlat[0] > xmaslocations[j].slat && longlat[0] < xmaslocations[j].nlats && longlat[1] > xmaslocations[j].wlong && longlat[1] < xmaslocations[j].nlat) { xmasname = xmaslocations[j].name}
     }
 
 
